@@ -2,75 +2,29 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ASO Audit Chat</title>
-  <style>
-    body { font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
-    #chat-box { border: 1px solid #ccc; height: 400px; overflow-y: scroll; padding: 10px; margin-bottom: 10px; }
-    .message { margin-bottom: 15px; }
-    .user { font-weight: bold; color: blue; }
-    .agent { font-weight: bold; color: green; }
-    input[type="text"] { width: 80%; padding: 8px; }
-    button { padding: 8px; }
-  </style>
+  <link rel="stylesheet" href="/css/style.css">
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
-  <h1>ASO Audit Agent</h1>
-  <div id="chat-box"></div>
-  <form id="chat-form">
-    <input type="text" id="url-input" placeholder="Paste Apple App Store URL here..." required />
-    <button type="submit">Send</button>
-  </form>
+  <div class="app-container">
+    <header>
+      <h1>ASO Audit Agent</h1>
+    </header>
+    
+    <div id="chat-box">
+      <!-- Messages will be injected here -->
+    </div>
+    
+    <div class="input-area">
+      <form id="chat-form">
+        <input type="text" id="url-input" placeholder="Paste Apple App Store URL or type your message here..." required autocomplete="off" />
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
 
-  <script>
-    const form = document.getElementById('chat-form');
-    const input = document.getElementById('url-input');
-    const chatBox = document.getElementById('chat-box');
-
-    function appendMessage(role, text) {
-      const div = document.createElement('div');
-      div.className = 'message';
-      const label = document.createElement('span');
-      label.className = role;
-      label.innerText = role === 'user' ? 'You: ' : 'Agent: ';
-      div.appendChild(label);
-      const content = document.createElement('span');
-      content.innerText = text;
-      div.appendChild(content);
-      chatBox.appendChild(div);
-      chatBox.scrollTop = chatBox.scrollHeight;
-    }
-
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      const url = input.value.trim();
-      if (!url) return;
-
-      appendMessage('user', url);
-      input.value = '';
-
-      try {
-        appendMessage('agent', '...'); // Loading state
-        const lastMsg = chatBox.lastChild;
-
-        const res = await fetch('/api/chat', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ url })
-        });
-        const data = await res.json();
-        
-        lastMsg.remove(); // Remove loading state
-        
-        if (data.error) {
-          appendMessage('agent', 'Error: ' + data.error);
-        } else {
-          appendMessage('agent', data.reply);
-        }
-      } catch (err) {
-        chatBox.lastChild.remove();
-        appendMessage('agent', 'Network error.');
-      }
-    });
-  </script>
+  <script type="module" src="/js/app.js"></script>
 </body>
 </html>

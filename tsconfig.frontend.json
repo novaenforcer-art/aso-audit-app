@@ -1,0 +1,14 @@
+{
+  "compilerOptions": {
+    "outDir": "./src/public/js",
+    "rootDir": "./src/public/ts",
+    "target": "ES2022",
+    "module": "ES2022",
+    "moduleResolution": "bundler",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
+  },
+  "include": ["src/public/ts/**/*.ts"]
+}

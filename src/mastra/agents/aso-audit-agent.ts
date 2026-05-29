@@ -1,20 +1,21 @@
 import { Agent } from '@mastra/core/agent';
 import { fetchMetadataTool } from '../tools/fetchMetadataTool.js';
+import { fetchFullListingTool } from '../tools/fetchFullListingTool.js';
+import fs from 'fs';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Read from the public folder so it survives the build process
+const skillPath = join(__dirname, '../public/aso-audit-skill.md');
+const asoAuditInstructions = fs.readFileSync(skillPath, 'utf8');
 
 export const asoAuditAgent = new Agent({
+  id: 'aso-audit-agent',
   name: 'asoAuditAgent',
-  instructions: `You are an expert in App Store Optimization with deep knowledge of Apple's ranking algorithms.
-When a user provides an Apple App Store URL, follow these steps strictly:
-
-Step 1: Use the fetchMetadataTool to retrieve surface-level metadata for the listing.
-Step 2: Present the retrieved metadata (app name, developer, icon URL, category, country) to the user and ask: "Is this the app you meant?"
-Wait for the user's confirmation.
-
-Do not proceed to the full ASO audit before the user confirms.`,
-  model: {
-    provider: 'openai',
-    name: 'gpt-4o',
-    toolChoice: 'auto',
-  },
-  tools: { fetchMetadataTool },
+  instructions: asoAuditInstructions,
+  model: 'nvidia/meta/llama-3.1-70b-instruct',
+  tools: { fetchMetadataTool, fetchFullListingTool },
 });
