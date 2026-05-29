@@ -1,0 +1,40 @@
+{
+  "name": "aso-audit-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "tsx src/server.ts",
+    "build": "mastra build",
+    "start": "mastra start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=22.13.0"
+  },
+  "dependencies": {
+    "@mastra/core": "^1.37.1",
+    "@mastra/duckdb": "^1.4.0",
+    "@mastra/evals": "^1.2.3",
+    "@mastra/libsql": "^1.11.1",
+    "@mastra/loggers": "^1.1.1",
+    "@mastra/memory": "^1.20.0",
+    "@mastra/observability": "^1.14.0",
+    "concurrently": "^10.0.0",
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^25.9.1",
+    "mastra": "^1.10.2",
+    "typescript": "^6.0.3"
+  }
+}
